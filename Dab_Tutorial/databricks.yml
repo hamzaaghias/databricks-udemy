@@ -1,0 +1,32 @@
+bundle:
+  name: Dab_Tutorial
+  uuid: eaaf7716-a3e9-4611-9fdb-c40204b0896a
+
+
+
+include:
+  - resources/*.yml
+  - resources/*/*.yml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: dbc-75fb4a1b-5919.cloud.databricks.com
+    permissions:
+      - group_name: admins
+        level: CAN_MANAGE
+    presets:
+      name_prefix: ${workspace.current_user.short_name}
+      source_linked_deployment: false
+
+  prod:
+    mode: production
+    workspace:
+      host: dbc-75fb4a1b-5919.cloud.databricks.com
+      # We explicitly deploy to /Workspace/Users/hamzaaghias@hotmail.com to make sure we only have a single copy.
+      root_path: /Workspace/Users/hamzaaghias@hotmail.com/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: hamzaaghias@hotmail.com
+        level: CAN_MANAGE
